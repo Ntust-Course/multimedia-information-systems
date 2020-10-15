@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Part 2</title>
+  </head>
+  <body>
+    <h1>Part 2</h1>
+    <h2>Instruction: drag the slider</h2>
+    <div class="range-wrap">
+      <label for="level">Level</label>
+      <input
+        type="range"
+        id="level"
+        class="range"
+        name="level"
+        min="0"
+        step="1"
+        max="15"
+      />
+      <output class="bubble"></output>
+    </div>
+
+    <canvas
+      id="part2"
+      width="800"
+      height="800"
+      style="border: 1px solid"
+    ></canvas>
+  </body>
+  <script src="part2.js"></script>
+  <script>
+    const allRanges = document.querySelectorAll(".range-wrap");
+    allRanges.forEach((wrap) => {
+      const range = wrap.querySelector(".range");
+      const bubble = wrap.querySelector(".bubble");
+
+      range.addEventListener("input", () => {
+        setBubble(range, bubble);
+      });
+      setBubble(range, bubble);
+    });
+
+    function setBubble(range, bubble) {
+      const val = range.value;
+      const min = range.min ? range.min : 0;
+      const max = range.max ? range.max : 15;
+      const newVal = Number(((val - min) * 15) / (max - min));
+      bubble.innerHTML = newVal;
+
+      // Sorta magic numbers based on size of the native UI thumb
+      bubble.style.left = `calc(${newVal}% + (${8 - newVal * 0.15}px))`;
+      drawAll(newVal);
+    }
+  </script>
+</html>
