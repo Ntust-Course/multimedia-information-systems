@@ -139,7 +139,10 @@ const COLORS = {
 
 // S_n = a * (1 - r^n) / 1-r
 // Follow Geometric_progression on wiki
-const getA = (r, n, sn) => (sn * (1 - r)) / (1 - r ** n);
+// original getA = (r, n, sn) => (sn * (1 - r)) / (1 - r ** n);
+const getA = (r, n, sn, x) =>
+  n != 1 ? (sn * (1 - r ** 2)) / ((1 - r ** n) * (1 + x * r)) : sn;
+// where x is sin(theta)
 
 const drawTree = (startX, startY, tree) => {
   // when goes down only grows downward or horizontally
@@ -217,7 +220,8 @@ const drawAll = (level) => {
   up.height = getA(
     up.heightDecay / Math.cos((up.rotateAngle * Math.PI) / 180),
     level,
-    up.fullHeight
+    up.fullHeight,
+    Math.cos((up.rotateAngle * Math.PI) / 180)
   );
   up.endLevel = level;
   drawTree(x, y, up, true);
