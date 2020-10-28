@@ -101,6 +101,15 @@ const bezier = (t, p0, p1, p2, p3) => {
   return { x, y };
 };
 
+const recurBezier = (i, accuracy, pts) => {
+  if (i >= 1) {
+    return;
+  }
+  let p = bezier(i, ...pts);
+  ctx.lineTo(p.x, p.y);
+  recurBezier((i += accuracy), accuracy, pts);
+};
+
 const draw = (pts) => {
   let accuracy = 0.001; //this'll give the bezier 100 segments
 
@@ -114,10 +123,8 @@ const draw = (pts) => {
   // draw curve
   ctx.fillStyle = "#000000";
   ctx.moveTo(pts[0].x, pts[0].y);
-  for (let i = 0; i < 1; i += accuracy) {
-    let p = bezier(i, ...pts);
-    ctx.lineTo(p.x, p.y);
-  }
+  // recursively
+  recurBezier(0, accuracy, pts);
   ctx.stroke();
 };
 
